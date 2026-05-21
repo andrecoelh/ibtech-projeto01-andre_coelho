@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cartão de visita de André Coelho e Silva — estudante de Ciência de Dados e IA no IBMEC-BH.">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,9 +13,15 @@
 
 <body>
 
+<nav class="nav-topo container">
+    <a href="#sobre">Sobre</a>
+    <a href="#fotos">Fotos</a>
+    <a href="#contatos">Contatos</a>
+</nav>
+
 <header class="container">
 
-    <img class="perfil" src="andre_social1.jpg" alt="selfie">
+    <img class="perfil" src="assets/andre_social1.jpg" alt="André Coelho sorrindo, foto de perfil">
 
     <h1>André Coelho e Silva</h1>
 
@@ -27,7 +34,7 @@
 
 <main class="container">
 
-    <section class="card">
+    <section class="card" id="sobre">
         <h2>Sobre Mim</h2>
 
         <p>Trajetória técnica (CEFET + Exército)</p>
@@ -60,22 +67,22 @@
         </ul>
     </section>
 
-    <section class="card imagens-grid">
-        <img class="imagem" src="cefet.jpg" alt="cefet">
-        <img class="imagem meio" src="formatura.jpg" alt="formatura">
-        <img class="imagem" src="andreboulder.jpg" alt="boulder">
+    <section class="card imagens-grid" id="fotos">
+        <img class="imagem" src="assets/cefet.jpg" alt="André em frente ao prédio do CEFET">
+        <img class="imagem meio" src="assets/formatura.jpg" alt="André na cerimônia de formatura">
+        <img class="imagem" src="assets/andreboulder.jpg" alt="André praticando boulder em parede de escalada">
     </section>
 
     <section class="card">
-    <h2>Soundtrack</h2>
+        <h2>Soundtrack</h2>
 
-    <iframe
-        src="https://www.youtube-nocookie.com/embed/pcEJyvv6_kc"
-        title="YouTube video player"
-        loading="lazy"
-        allowfullscreen>
-    </iframe>
-</section>
+        <iframe
+            src="https://www.youtube-nocookie.com/embed/pcEJyvv6_kc"
+            title="Vídeo musical de apresentação"
+            loading="lazy"
+            allowfullscreen>
+        </iframe>
+    </section>
 
     <section class="card">
         <h2>Achievements</h2>
@@ -86,55 +93,64 @@
         </p>
     </section>
 
+</main>
+
+<footer class="container" id="contatos">
     <section class="card">
         <h2>Contatos</h2>
 
-        <p class="email">Email: moldre@outlook.com</p>
+        <p>
+            <span class="email">Email: moldre@outlook.com</span>
+            <span id="email-feedback" hidden>✓ Copiado!</span>
+        </p>
 
         <a href="https://www.linkedin.com/in/andr%C3%A9-coelho-e-silva-786278382/"
-        class="botao"
-        target="_blank">
+           class="botao"
+           target="_blank"
+           rel="noopener noreferrer">
             LinkedIn
         </a>
 
         <a href="https://github.com/andrecoelh"
-        class="botao"
-        target="_blank">
+           class="botao"
+           target="_blank"
+           rel="noopener noreferrer">
             GitHub
         </a>
     </section>
+</footer>
 
-</main>
-    <div class="terminal-overlay">
-
+<div class="terminal-overlay">
     <div class="terminal">
 
         <div class="terminal-topo">
             <span class="bolinha vermelho"></span>
             <span class="bolinha amarelo"></span>
             <span class="bolinha verde"></span>
+            <span class="terminal-hint">Ctrl+K para abrir · Esc para fechar</span>
         </div>
 
         <div class="terminal-conteudo">
 
             <p>
                 <span class="prompt">></span>
-                Digite um comando
+                Digite um comando ou <kbd>help</kbd>
             </p>
 
             <input
                 type="text"
                 class="terminal-input"
                 placeholder="whoami"
-                autocomplete="off">
+                autocomplete="off"
+                spellcheck="false">
 
             <div class="terminal-output"></div>
 
         </div>
 
     </div>
-
 </div>
-    <script src="script.js"></script>
+
+<script src="script.js" defer></script>
 </body>
 </html>

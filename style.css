@@ -1,190 +1,292 @@
-*{
+/* ===========================
+   VARIÁVEIS — :root (tema escuro padrão)
+   =========================== */
+
+:root {
+    /* Paleta */
+    --bg:           #111111;
+    --surface:      #1f1f1f;
+    --surface-2:    #2f2f2f;
+    --border:       #333333;
+    --text:         #e4e4e4;
+    --text-forte:   #ffffff;
+    --text-suave:   #a1a1aa;
+    --accent:       #27c93f;
+
+    /* Tipografia */
+    --fs-xs:   0.8rem;
+    --fs-sm:   0.9rem;
+    --fs-base: 1rem;
+    --fs-h2:   1.3rem;
+    --fs-h1:   2.4rem;
+
+    /* Espaçamentos */
+    --space-xs:  8px;
+    --space-sm:  10px;
+    --space-md:  25px;
+    --space-lg:  60px;
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 16px;
+}
+
+/* Tema claro — ativado via JS com data-theme="light" no <html> */
+[data-theme="light"] {
+    --bg:           #f3f3f3;
+    --surface:      #ffffff;
+    --surface-2:    #e4e4e4;
+    --border:       #d4d4d4;
+    --text:         #111111;
+    --text-forte:   #000000;
+    --text-suave:   #525252;
+}
+
+/* ===========================
+   RESET & BASE
+   =========================== */
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
-    background-color: #111111;
-    color: #e4e4e4;
+body {
+    background-color: var(--bg);
+    color: var(--text);
     font-family: 'Inter', Helvetica, sans-serif;
+    font-size: var(--fs-base);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.container{
+/* ===========================
+   LAYOUT
+   =========================== */
+
+.container {
     width: 90%;
     max-width: 800px;
     margin: auto;
     padding: 30px 0;
 }
 
-header{
+header {
     text-align: center;
-    padding-top: 60px;
+    padding-top: var(--space-lg);
 }
 
-h1{
-    font-size: 2.4rem;
+footer.container {
+    padding-bottom: var(--space-lg);
+}
+
+/* ===========================
+   NAVEGAÇÃO
+   =========================== */
+
+.nav-topo {
+    display: flex;
+    gap: var(--space-md);
+    padding-top: var(--space-md);
+    padding-bottom: 0;
+}
+
+.nav-topo a {
+    color: var(--text-suave);
+    text-decoration: none;
+    font-size: var(--fs-sm);
+    transition: color 0.2s;
+}
+
+.nav-topo a:hover {
+    color: var(--text-forte);
+}
+
+/* ===========================
+   TIPOGRAFIA
+   =========================== */
+
+h1 {
+    font-size: var(--fs-h1);
+    color: var(--text-forte);
     margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: var(--space-sm);
 }
 
-h2{
-    font-size: 1.3rem;
+h2 {
+    font-size: var(--fs-h2);
+    color: var(--text-forte);
     margin-bottom: 15px;
-    color: white;
 }
 
-.descricao{
-    color: #a1a1aa;
+.descricao {
+    font-size: var(--fs-sm);
+    color: var(--text-suave);
     max-width: 600px;
     margin: auto;
 }
 
-.card{
-    background-color: #1f1f1f;
-    border: 1px solid #333;
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 25px;
+kbd {
+    font-family: inherit;
+    font-size: var(--fs-xs);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 5px;
 }
 
-ul{
+/* ===========================
+   CARDS
+   =========================== */
+
+.card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+
+    /* Estado inicial para animação IntersectionObserver */
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease,
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.card.mostrar {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===========================
+   LISTAS
+   =========================== */
+
+ul {
     padding-left: 20px;
 }
 
-li{
-    margin-bottom: 8px;
+li {
+    margin-bottom: var(--space-xs);
 }
 
-.imagem{
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 14px;
-    transition: 0.3s;
-}
+/* ===========================
+   IMAGENS
+   =========================== */
 
-.imagem:hover{
-    transform: scale(1.02);
-}
-
-.meio{
-    object-position: center 30%;
-}
-
-.perfil{
+.perfil {
     width: 140px;
     height: 140px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #333;
+    border: 3px solid var(--border);
 }
 
-.imagens-grid{
+.imagens-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
 
-.botao{
+.imagem {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    transition: transform 0.3s ease;
+}
+
+.imagem:hover {
+    transform: scale(1.02);
+}
+
+.meio {
+    object-position: center 30%;
+}
+
+/* ===========================
+   IFRAME / VÍDEO
+   =========================== */
+
+iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    border-radius: var(--radius-md);
+}
+
+/* ===========================
+   BOTÕES E LINKS
+   =========================== */
+
+.botao {
     display: inline-block;
-    margin-top: 10px;
-    margin-right: 10px;
-    padding: 10px 18px;
-    background-color: #2f2f2f;
-    color: white;
+    margin-top: var(--space-sm);
+    margin-right: var(--space-sm);
+    padding: var(--space-sm) 18px;
+    background-color: var(--surface-2);
+    color: var(--text-forte);
     text-decoration: none;
-    border-radius: 10px;
-    transition: 0.2s;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: var(--fs-sm);
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s;
 }
 
-.botao:hover{
-    background-color: #3a3a3a;
+.botao:hover {
+    background-color: var(--border);
+    transform: translateY(-1px);
 }
 
-.tema-claro{
-    background-color: #f3f3f3;
-    color: #111111;
+/* Email feedback */
+#email-feedback {
+    font-size: var(--fs-xs);
+    color: var(--accent);
+    margin-left: var(--space-xs);
 }
 
-.tema-claro .card{
-    background-color: white;
-    border: 1px solid #d4d4d4;
-}
+/* ===========================
+   BOTÃO TEMA (fixo, canto)
+   =========================== */
 
-.tema-claro h2{
-    color: #111111;
-}
-
-.tema-claro .descricao{
-    color: #525252;
-}
-
-.tema-claro .botao{
-    background-color: #e4e4e4;
-    color: #111111;
-}
-
-.tema-claro .botao:hover{
-    background-color: #d4d4d4;
-}
-
-.botao-tema{
+.botao-tema {
     position: fixed;
     top: 20px;
     right: 20px;
 
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
 
-    border: none;
+    border: 1px solid var(--border);
     border-radius: 50%;
 
-    background-color: #1f1f1f;
-    color: white;
+    background-color: var(--surface);
+    color: var(--text-forte);
 
     cursor: pointer;
-
-    font-size: 1.2rem;
-
-    transition: 0.3s;
-
+    font-size: 1.1rem;
+    transition: transform 0.3s, background-color 0.3s;
     z-index: 999;
 }
 
-.botao-tema:hover{
-    transform: scale(1.05);
+.botao-tema:hover {
+    transform: scale(1.1);
 }
 
-.card{
-    opacity: 0;
-    transform: translateY(30px);
+/* ===========================
+   TERMINAL
+   =========================== */
 
-    transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
-}
-
-.card.mostrar{
-    opacity: 1;
-    transform: translateY(0);
-}
-
-iframe{
-    width: 100%;
-    aspect-ratio: 16 / 9;
-
-    border: none;
-    border-radius: 14px;
-}
-
-
-.terminal-overlay{
+.terminal-overlay {
     position: fixed;
     inset: 0;
 
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
 
     display: flex;
@@ -193,93 +295,119 @@ iframe{
 
     opacity: 0;
     pointer-events: none;
-
-    transition: 0.3s;
-
+    transition: opacity 0.3s;
     z-index: 2000;
 }
 
-.terminal-overlay.ativo{
+.terminal-overlay.ativo {
     opacity: 1;
     pointer-events: all;
 }
 
-.terminal{
+.terminal {
     width: 90%;
     max-width: 700px;
 
     background-color: #111111;
     border: 1px solid #333;
-
     border-radius: 18px;
-
     overflow: hidden;
-
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-.terminal-topo{
+.terminal-topo {
     display: flex;
-    gap: 8px;
-
+    align-items: center;
+    gap: var(--space-xs);
     padding: 14px 18px;
-
     background-color: #1a1a1a;
-
     border-bottom: 1px solid #2a2a2a;
 }
 
-.bolinha{
+.terminal-hint {
+    font-size: var(--fs-xs);
+    color: #555;
+    margin-left: auto;
+}
+
+.bolinha {
     width: 12px;
     height: 12px;
-
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
-.vermelho{
-    background: #ff5f56;
+.vermelho  { background: #ff5f56; }
+.amarelo   { background: #ffbd2e; }
+.verde     { background: #27c93f; }
+
+.terminal-conteudo {
+    padding: var(--space-md);
 }
 
-.amarelo{
-    background: #ffbd2e;
+.prompt {
+    color: var(--accent);
 }
 
-.verde{
-    background: #27c93f;
-}
-
-.terminal-conteudo{
-    padding: 25px;
-}
-
-.prompt{
-    color: #27c93f;
-}
-
-.terminal-input{
+.terminal-input {
     width: 100%;
-
     margin-top: 15px;
-
     background: transparent;
     border: none;
     outline: none;
-
-    color: white;
-
-    font-size: 1rem;
-
+    color: #ffffff;
+    font-size: var(--fs-base);
     font-family: 'Inter', sans-serif;
 }
 
-.terminal-output{
+.terminal-output {
     margin-top: 20px;
-
     color: #d4d4d4;
+    font-size: var(--fs-sm);
+    white-space: pre-line;
 }
 
-.comando{
-    color: #27c93f;
+.comando {
+    color: var(--accent);
+    margin-bottom: var(--space-xs);
+}
 
-    margin-bottom: 10px;
+/* ===========================
+   RESPONSIVIDADE
+   =========================== */
+
+@media (max-width: 768px) {
+    h1 { font-size: 1.8rem; }
+
+    .imagens-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .imagem {
+        height: 220px;
+    }
+
+    .nav-topo {
+        gap: var(--space-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 1.5rem; }
+
+    .container {
+        width: 94%;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .botao-tema {
+        top: 12px;
+        right: 12px;
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
 }

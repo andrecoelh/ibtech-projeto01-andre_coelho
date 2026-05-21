@@ -1,23 +1,18 @@
-const body = document.body;
+// =========================
+// TYPEWRITER
+// =========================
+
 const descricao = document.querySelector(".descricao");
-const cards = document.querySelectorAll(".card");
-
-
 const textoOriginal =
-"Estudante de Ciência de Dados e IA no IBMEC-BH, interessado na interseção entre dados, tecnologia e finanças.";
+    "Estudante de Ciência de Dados e IA no IBMEC-BH, interessado na interseção entre dados, tecnologia e finanças.";
 
 descricao.textContent = "";
-
 let index = 0;
 
 function typeWriter() {
-
-    if(index < textoOriginal.length){
-
+    if (index < textoOriginal.length) {
         descricao.textContent += textoOriginal.charAt(index);
-
         index++;
-
         setTimeout(typeWriter, 35);
     }
 }
@@ -25,269 +20,165 @@ function typeWriter() {
 typeWriter();
 
 
+// =========================
+// TEMA CLARO / ESCURO
+// Usa data-theme no <html> para compatibilidade com variáveis CSS :root
+// =========================
+
+const html = document.documentElement;
+
 const botaoTema = document.createElement("button");
-
 botaoTema.classList.add("botao-tema");
+botaoTema.setAttribute("aria-label", "Alternar tema");
+document.body.appendChild(botaoTema);
 
-body.appendChild(botaoTema);
+function aplicarTema(tema) {
+    html.setAttribute("data-theme", tema);
+    localStorage.setItem("tema", tema);
+    botaoTema.textContent = tema === "light" ? "🌙" : "☀️";
+}
 
-
+// Na carga: usa o salvo; se não houver, respeita o sistema
 const temaSalvo = localStorage.getItem("tema");
 
-const prefereEscuro = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-if(temaSalvo === "claro"){
-
-    body.classList.add("tema-claro");
-
-}else if(temaSalvo === "escuro"){
-
-    body.classList.remove("tema-claro");
-
-}else{
-
-    if(!prefereEscuro){
-
-        body.classList.add("tema-claro");
-    }
+if (temaSalvo === "light" || temaSalvo === "dark") {
+    aplicarTema(temaSalvo);
+} else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    aplicarTema("light");
+} else {
+    aplicarTema("dark");
 }
-
-
-function atualizarBotao(){
-
-    if(body.classList.contains("tema-claro")){
-
-        botaoTema.textContent = "🌙";
-
-    }else{
-
-        botaoTema.textContent = "☀️";
-    }
-}
-
-atualizarBotao();
-
 
 botaoTema.addEventListener("click", () => {
-
-    body.classList.toggle("tema-claro");
-
-    if(body.classList.contains("tema-claro")){
-
-        localStorage.setItem("tema", "claro");
-
-    }else{
-
-        localStorage.setItem("tema", "escuro");
-    }
-
-    atualizarBotao();
+    const atual = html.getAttribute("data-theme");
+    aplicarTema(atual === "light" ? "dark" : "light");
 });
 
 
+// =========================
+// COPIAR E-MAIL
+// =========================
 
-const emailElemento = document.querySelector(".email");
+const emailSpan   = document.querySelector(".email");
+const feedback    = document.getElementById("email-feedback");
+const EMAIL       = "moldre@outlook.com";
 
 const botaoCopiar = document.createElement("button");
-
 botaoCopiar.textContent = "Copiar e-mail";
-
 botaoCopiar.classList.add("botao");
-
-emailElemento.insertAdjacentElement("afterend", botaoCopiar);
-
+emailSpan.insertAdjacentElement("afterend", botaoCopiar);
 
 botaoCopiar.addEventListener("click", async () => {
-
-    try{
-
-        await navigator.clipboard.writeText("moldre@outlook.com");
-
+    try {
+        await navigator.clipboard.writeText(EMAIL);
+        feedback.hidden = false;
         botaoCopiar.textContent = "Copiado!";
-
         setTimeout(() => {
-
+            feedback.hidden = true;
             botaoCopiar.textContent = "Copiar e-mail";
-
         }, 2000);
-
-    }catch(error){
-
+    } catch {
         botaoCopiar.textContent = "Erro ao copiar";
+        setTimeout(() => { botaoCopiar.textContent = "Copiar e-mail"; }, 2000);
     }
 });
 
 
+// =========================
+// INTERSECTION OBSERVER — animação de entrada
+// =========================
+
+const cards = document.querySelectorAll(".card");
 
 const observer = new IntersectionObserver((entries) => {
-
     entries.forEach((entry) => {
-
-        if(entry.isIntersecting){
-
+        if (entry.isIntersecting) {
             entry.target.classList.add("mostrar");
+            observer.unobserve(entry.target); // dispara só uma vez
         }
     });
+}, { threshold: 0.15 });
 
-}, {
-    threshold: 0.15
-});
+cards.forEach((card) => observer.observe(card));
 
-
-cards.forEach((card) => {
-
-    observer.observe(card);
-});
 
 // =========================
-// TERMINAL MODE
+// TERMINAL MODE (Ctrl+K)
 // =========================
 
-const overlay = document.querySelector(".terminal-overlay");
-
+const overlay       = document.querySelector(".terminal-overlay");
 const terminalInput = document.querySelector(".terminal-input");
-
 const terminalOutput = document.querySelector(".terminal-output");
 
-
-// abrir terminal
+// Abrir / fechar
 document.addEventListener("keydown", (event) => {
-
-    if(event.ctrlKey && event.key.toLowerCase() === "k"){
-
+    if (event.ctrlKey && event.key.toLowerCase() === "k") {
         event.preventDefault();
-
         overlay.classList.add("ativo");
-
         terminalInput.focus();
     }
-
-    // fechar
-    if(event.key === "Escape"){
-
+    if (event.key === "Escape") {
         overlay.classList.remove("ativo");
     }
 });
 
-
-// comandos
-terminalInput.addEventListener("keydown", (event) => {
-
-    if(event.key === "Enter"){
-
-        const comando = terminalInput.value.toLowerCase().trim();
-
-        let resposta = "";
-
-        switch(comando){
-
-    case "help":
-
-        resposta =
-        `
-        Available commands:<br><br>
-
-        whoami<br>
-        skills<br>
-        projects<br>
-        vision<br>
-        music<br>
-        contact<br>
-        clear
-        `;
-
-        break;
-
-
-    case "whoami":
-
-        resposta =
-        `
-        André Coelho — Data Science & AI student
-        focused on finance, systems and technology.
-        `;
-
-        break;
-
-
-    case "skills":
-
-        resposta =
-        `
-        Python, Data Analysis, Automation,
-        Risk Management, Artificial Intelligence.
-        `;
-
-        break;
-
-
-    case "projects":
-
-        resposta =
-        `
-        Currently building my portfolio and
-        exploring financial risk systems.
-        `;
-
-        break;
-
-
-    case "vision":
-
-        resposta =
-        `
-        Turning data into systems that solve
-        real-world problems.
-        `;
-
-        break;
-
-
-    case "music":
-
-        resposta =
-        `
-        Radiohead, ambient soundscapes and
-        late night coding sessions.
-        `;
-
-        break;
-
-
-    case "contact":
-
-        resposta =
-        `
-        moldre@outlook.com
-        `;
-
-        break;
-
-
-    case "clear":
-
-        terminalOutput.innerHTML = "";
-
-        terminalInput.value = "";
-
-        return;
-
-
-    default:
-
-        resposta =
-        `
-        Command not recognized.
-        Type "help" to see available commands.
-        `;
-}
-
-terminalOutput.innerHTML += `
-            <p class="comando">> ${comando}</p>
-            <p>${resposta}</p>
-            <br>
-        `;
-
-        terminalInput.value = "";
+// Fechar clicando fora do terminal
+overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) {
+        overlay.classList.remove("ativo");
     }
+});
+
+// Comandos
+const comandos = {
+    help: `
+Comandos disponíveis:<br><br>
+whoami &nbsp;&nbsp; — quem sou eu<br>
+skills &nbsp;&nbsp; — minhas habilidades<br>
+projects — projetos em andamento<br>
+vision &nbsp;&nbsp; — visão de futuro<br>
+music &nbsp;&nbsp;&nbsp; — o que toca aqui<br>
+contact &nbsp; — como me encontrar<br>
+clear &nbsp;&nbsp;&nbsp; — limpar o terminal`,
+
+    whoami: `André Coelho — estudante de Data Science & AI no IBMEC-BH,
+focado em finanças, sistemas e tecnologia.`,
+
+    skills: `Python · Data Analysis · Automation
+Risk Management · Artificial Intelligence`,
+
+    projects: `Construindo portfólio e explorando
+sistemas de risco financeiro.`,
+
+    vision: `Transformar dados em sistemas que resolvem
+problemas reais.`,
+
+    music: `Radiohead, ambient soundscapes e
+sessões de código de madrugada.`,
+
+    contact: `moldre@outlook.com
+github.com/andrecoelh`,
+};
+
+terminalInput.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+
+    const cmd = terminalInput.value.toLowerCase().trim();
+    terminalInput.value = "";
+
+    if (cmd === "clear") {
+        terminalOutput.innerHTML = "";
+        return;
+    }
+
+    const resposta = comandos[cmd] ||
+        `Comando não reconhecido. Digite <strong>help</strong> para ver os disponíveis.`;
+
+    terminalOutput.innerHTML += `
+        <p class="comando">> ${cmd}</p>
+        <p>${resposta}</p>
+        <br>
+    `;
+
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
 });
